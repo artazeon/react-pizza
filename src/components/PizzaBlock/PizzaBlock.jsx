@@ -23,7 +23,7 @@ export default function PizzaBlock({ title, price, imageUrl, sizes, types }) {
               className={activeType === index ? 'active' : ''}
               onClick={() => setActiveType(index)}
             >
-              {typeName[typeId]}
+              {typeName[index]}
             </li>
           ))}
         </ul>
