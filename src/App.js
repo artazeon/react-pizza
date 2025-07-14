@@ -6,21 +6,27 @@ import Categories from './components/Categories/Categories'
 import Sort from './components/Sort/Sort'
 import PizzaBlock from './components/PizzaBlock/PizzaBlock'
 
-import pizzas from './assets/pizzas.json'
-
 function App() {
+  const [items, setItems] = React.useState([])
+
+  React.useEffect(() => {
+    fetch('https://7a864f3f9ff03705.mokky.dev/items')
+      .then((res) => res.json())
+      .then((arr) => setItems(arr))
+  }, [])
+
   return (
     <div className="wrapper">
       <Header />
       <div className="content">
         <div className="container">
           <div className="content__top">
-            {/* <Categories /> */}
+            <Categories />
             <Sort />
           </div>
           <h2 className="content__title">Все пиццы</h2>
           <div className="content__items">
-            {pizzas.map((obj, index) => (
+            {items.map((obj, index) => (
               <PizzaBlock {...obj} key={index} />
             ))}
           </div>
