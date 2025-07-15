@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Categories() {
+const Categories = () => {
   const [activeIndex, setActiveIndex] = React.useState(0)
 
   const categories = [
@@ -28,3 +28,5 @@ export default function Categories() {
     </div>
   )
 }
+
+export default Categories
