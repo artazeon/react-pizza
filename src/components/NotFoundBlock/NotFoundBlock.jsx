@@ -1,13 +1,18 @@
 import React from 'react'
 
+import styles from './NotFoundBlock.module.scss'
+
 const NotFoundBlock = () => {
   return (
-    <div>
+    <div className={styles.root}>
       <h1>
-        <span>🙁</span>
+        <span>404 🙁</span>
         <br />
-        Ничего не найдено
+        Что-то пошло не так...
       </h1>
+      <p className={styles.description}>
+        Запрашиваемая вами страница не найдена
+      </p>
     </div>
   )
 }
