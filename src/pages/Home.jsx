@@ -16,19 +16,22 @@ const Home = () => {
         setItems(arr)
         setIsLoading(false)
       })
+    window.scrollTo(0, 0)
   }, [])
 
   return (
     <>
-      <div className="content__top">
-        <Categories />
-        <Sort />
-      </div>
-      <h2 className="content__title">Все пиццы</h2>
-      <div className="content__items">
-        {isLoading
-          ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
-          : items.map((obj, index) => <PizzaBlock {...obj} key={index} />)}
+      <div className="container">
+        <div className="content__top">
+          <Categories />
+          <Sort />
+        </div>
+        <h2 className="content__title">Все пиццы</h2>
+        <div className="content__items">
+          {isLoading
+            ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
+            : items.map((obj, index) => <PizzaBlock {...obj} key={index} />)}
+        </div>
       </div>
     </>
   )
