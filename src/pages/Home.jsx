@@ -16,23 +16,22 @@ const Home = ({ searchValue }) => {
 
   const category = categoryId > 0 ? `category=${categoryId}` : 'category=*'
   const sort = `&sortBy=${sortType.sortProperty}`
+  const search = searchValue ? `&title=*${searchValue}*` : ''
 
   React.useEffect(() => {
     setIsLoading(true)
-    fetch(`https://7a864f3f9ff03705.mokky.dev/items?${category}${sort}`)
+    fetch(
+      `https://7a864f3f9ff03705.mokky.dev/items?${category}${sort}${search}`
+    )
       .then((res) => res.json())
       .then((arr) => {
         setItems(arr)
         setIsLoading(false)
       })
     window.scrollTo(0, 0)
-  }, [categoryId, sortType, category, sort])
+  }, [categoryId, sortType, searchValue])
 
-  const pizzas = items
-    .filter((obj) =>
-      obj.title.toLowerCase().includes(searchValue.toLowerCase())
-    )
-    .map((obj, index) => <PizzaBlock {...obj} key={index} />)
+  const pizzas = items.map((obj, index) => <PizzaBlock {...obj} key={index} />)
   const skeletons = [...new Array(6)].map((_, index) => (
     <Skeleton key={index} />
   ))
