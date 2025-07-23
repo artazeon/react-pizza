@@ -3,9 +3,7 @@ import ReactPaginate from 'react-paginate'
 
 import styles from './Pagenation.module.scss'
 
-const Pagenation = ({ pagenation, pagenationCurrentPage, onChangePage }) => {
-  console.log(pagenation)
-  console.log(pagenationCurrentPage)
+const Pagenation = ({ pagenation, onChangePage }) => {
   return (
     <ReactPaginate
       className={styles.root}
