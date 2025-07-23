@@ -4,11 +4,14 @@ import Categories from '../components/Categories/Categories'
 import Sort from '../components/Sort/Sort'
 import PizzaBlock from '../components/PizzaBlock/PizzaBlock'
 import Skeleton from '../components/PizzaBlock/Skeleton'
+import Pagenation from '../components/Pagenation/Pagenation'
 
 const Home = ({ searchValue }) => {
   const [items, setItems] = React.useState([])
   const [isLoading, setIsLoading] = React.useState(true)
   const [categoryId, setCategoryId] = React.useState(0)
+  const [pagenation, setPagenation] = React.useState({})
+  const [currentPage, setCurrentPage] = React.useState(1)
   const [sortType, setSortType] = React.useState({
     name: 'популярности ↓',
     sortProperty: '-rating',
@@ -21,15 +24,17 @@ const Home = ({ searchValue }) => {
   React.useEffect(() => {
     setIsLoading(true)
     fetch(
-      `https://7a864f3f9ff03705.mokky.dev/items?${category}${sort}${search}`
+      `https://7a864f3f9ff03705.mokky.dev/items?page=${currentPage}&limit=8&${category}${sort}${search}`
     )
       .then((res) => res.json())
-      .then((arr) => {
-        setItems(arr)
+      .then((obj) => {
+        setItems(obj.items)
+        setPagenation(obj.meta)
+        setCurrentPage(obj.meta.current_page)
         setIsLoading(false)
       })
     window.scrollTo(0, 0)
-  }, [categoryId, sortType, searchValue])
+  }, [categoryId, sortType, searchValue, currentPage])
 
   const pizzas = items.map((obj, index) => <PizzaBlock {...obj} key={index} />)
   const skeletons = [...new Array(6)].map((_, index) => (
@@ -55,6 +60,12 @@ const Home = ({ searchValue }) => {
         </div>
         <h2 className="content__title">Все пиццы</h2>
         <div className="content__items">{isLoading ? skeletons : pizzas}</div>
+        <Pagenation
+          pagenation={pagenation}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          onChangePage={(number) => setCurrentPage(number)}
+        />
       </div>
     </>
   )
