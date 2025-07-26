@@ -1,5 +1,7 @@
 import React from 'react'
 import { SearchContext } from '../App'
+import { useSelector, useDispatch } from 'react-redux'
+import { setCategoryId } from '../redux/slices/filterSlice'
 
 import Categories from '../components/Categories/Categories'
 import Sort from '../components/Sort/Sort'
@@ -8,10 +10,13 @@ import Skeleton from '../components/PizzaBlock/Skeleton'
 import Pagenation from '../components/Pagenation/Pagenation'
 
 const Home = () => {
+  const categoryId = useSelector((state) => state.filter.categoryId)
+  const dispatch = useDispatch()
+
   const { searchValue } = React.useContext(SearchContext)
   const [items, setItems] = React.useState([])
   const [isLoading, setIsLoading] = React.useState(true)
-  const [categoryId, setCategoryId] = React.useState(0)
+  // const [categoryId, setCategoryId] = React.useState(0)
   const [pagenation, setPagenation] = React.useState({
     total_pages: 1,
     current_page: 1,
@@ -21,6 +26,10 @@ const Home = () => {
     name: 'популярности ↓',
     sortProperty: '-rating',
   })
+
+  const onChangeCategory = (id) => {
+    dispatch(setCategoryId(id))
+  }
 
   React.useEffect(() => {
     const category = categoryId > 0 ? `category=${categoryId}` : 'category=*'
@@ -51,12 +60,7 @@ const Home = () => {
     <>
       <div className="container">
         <div className="content__top">
-          <Categories
-            value={categoryId}
-            onClickCategory={(index) => {
-              setCategoryId(index)
-            }}
-          />
+          <Categories value={categoryId} onChangeCategory={onChangeCategory} />
           <Sort
             value={sortType}
             onChangeSort={(index) => {
