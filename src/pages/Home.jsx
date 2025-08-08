@@ -1,4 +1,6 @@
 import React from 'react'
+import axios from 'axios'
+
 import { SearchContext } from '../App'
 import { useSelector, useDispatch } from 'react-redux'
 import { setCategoryId } from '../redux/slices/filterSlice'
@@ -32,15 +34,14 @@ const Home = () => {
     const sortBy = `&sortBy=${sort.sortProperty}`
     const search = searchValue ? `&title=*${searchValue}*` : ''
 
-    setIsLoading(true)
-    fetch(
-      `https://7a864f3f9ff03705.mokky.dev/items?page=${currentPage}&limit=8&${category}${sortBy}${search}`
-    )
-      .then((res) => res.json())
-      .then((obj) => {
-        setItems(obj.items)
-        setPagenation(obj.meta)
-        setCurrentPage(obj.meta.current_page)
+    axios
+      .get(
+        `https://7a864f3f9ff03705.mokky.dev/items?page=${currentPage}&limit=8&${category}${sortBy}${search}`
+      )
+      .then((res) => {
+        setItems(res.data.items)
+        setPagenation(res.data.meta)
+        setCurrentPage(res.data.meta.current_page)
         setIsLoading(false)
       })
 
