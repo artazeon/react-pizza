@@ -16,8 +16,11 @@ const filerSlice = createSlice({
     setCategoryId(state, action) {
       state.categoryId = action.payload
     },
+    setSort(state, action) {
+      state.sort = action.payload
+    },
   },
 })
 
-export const { setCategoryId } = filerSlice.actions
+export const { setCategoryId, setSort } = filerSlice.actions
 export default filerSlice.reducer
