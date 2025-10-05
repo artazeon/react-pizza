@@ -5,24 +5,26 @@ import { SearchContext } from '../../App'
 import styles from './Search.module.scss'
 
 const Search = () => {
-  const { searchValue, setSearchValue } = React.useContext(SearchContext)
+  const [value, setValue] = React.useState('')
+  const { setSearchValue } = React.useContext(SearchContext)
   const inputRef = React.useRef()
 
-  const testDebounce = React.useCallback(
-    debounce(() => {
-      console.log('HELLO')
+  const onClickClear = () => {
+    setSearchValue('')
+    setValue('')
+    inputRef.current.focus()
+  }
+
+  const updateSearchValue = React.useCallback(
+    debounce((str) => {
+      setSearchValue(str)
     }, 1000),
     []
   )
 
   const onChangeInput = (event) => {
-    setSearchValue(event.target.value)
-    testDebounce()
-  }
-
-  const onClickClear = () => {
-    setSearchValue('')
-    inputRef.current.focus()
+    setValue(event.target.value)
+    updateSearchValue(event.target.value)
   }
 
   return (
@@ -40,13 +42,13 @@ const Search = () => {
 
       <input
         ref={inputRef}
-        value={searchValue}
+        value={value}
         onChange={(event) => onChangeInput(event)}
         className={styles.input}
         placeholder="Поиск пиццы..."
       />
 
-      {searchValue && (
+      {value && (
         <svg
           onClick={onClickClear}
           className={styles.clearIcon}

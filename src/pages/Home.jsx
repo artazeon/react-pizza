@@ -3,7 +3,7 @@ import axios from 'axios'
 
 import { SearchContext } from '../App'
 import { useSelector, useDispatch } from 'react-redux'
-import { setCategoryId } from '../redux/slices/filterSlice'
+import { setCategoryId, setCurrentPage } from '../redux/slices/filterSlice'
 
 import Categories from '../components/Categories/Categories'
 import Sort from '../components/Sort/Sort'
@@ -13,7 +13,7 @@ import Pagenation from '../components/Pagenation/Pagenation'
 
 const Home = () => {
   const dispatch = useDispatch()
-  const { categoryId, sort } = useSelector((state) => state.filter)
+  const { categoryId, sort, currentPage } = useSelector((state) => state.filter)
 
   const { searchValue } = React.useContext(SearchContext)
   const [items, setItems] = React.useState([])
@@ -23,10 +23,13 @@ const Home = () => {
     total_pages: 1,
     current_page: 1,
   })
-  const [currentPage, setCurrentPage] = React.useState(1)
 
   const onChangeCategory = (id) => {
     dispatch(setCategoryId(id))
+  }
+
+  const onChangePage = (number) => {
+    dispatch(setCurrentPage(number))
   }
 
   React.useEffect(() => {
@@ -36,7 +39,7 @@ const Home = () => {
 
     axios
       .get(
-        `https://7a864f3f9ff03705.mokky.dev/items?page=${currentPage}&limit=8&${category}${sortBy}${search}`
+        `https://7a864f3f9ff03705.mokky.dev/items?page=${currentPage}&limit=4&${category}${sortBy}${search}`
       )
       .then((res) => {
         setItems(res.data.items)
@@ -62,12 +65,7 @@ const Home = () => {
         </div>
         <h2 className="content__title">Все пиццы</h2>
         <div className="content__items">{isLoading ? skeletons : pizzas}</div>
-        <Pagenation
-          pagenation={pagenation}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          onChangePage={(number) => setCurrentPage(number)}
-        />
+        <Pagenation currentPage={currentPage} onChangePage={onChangePage} />
       </div>
     </>
   )
