@@ -39,17 +39,18 @@ const Home = () => {
 
     axios
       .get(
-        `https://7a864f3f9ff03705.mokky.dev/items?page=${currentPage}&limit=4&${category}${sortBy}${search}`
+        `https://7a864f3f9ff03705.mokky.dev/items?page=${currentPage}&limit=8&${category}${sortBy}${search}`
       )
       .then((res) => {
         setItems(res.data.items)
         setPagenation(res.data.meta)
-        setCurrentPage(res.data.meta.current_page)
         setIsLoading(false)
       })
 
     window.scrollTo(0, 0)
   }, [categoryId, sort.sortProperty, searchValue, currentPage])
+
+  console.log(pagenation.total_pages)
 
   const pizzas = items.map((obj, index) => <PizzaBlock {...obj} key={index} />)
   const skeletons = [...new Array(6)].map((_, index) => (
@@ -65,7 +66,11 @@ const Home = () => {
         </div>
         <h2 className="content__title">Все пиццы</h2>
         <div className="content__items">{isLoading ? skeletons : pizzas}</div>
-        <Pagenation currentPage={currentPage} onChangePage={onChangePage} />
+        <Pagenation
+          totalPages={pagenation.total_pages}
+          currentPage={currentPage}
+          onChangePage={onChangePage}
+        />
       </div>
     </>
   )
